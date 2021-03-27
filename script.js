@@ -188,21 +188,27 @@
                 return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
             }
 
+            document.addEventListener("keydown", (event) => {
+                if (gameInfo.gameStarted) {
+                    switch(event.key) {
+                        case 'ArrowDown':
+                            if(player.y < canvas.height - player.h - player.speed) {
+                                player.y += player.speed;
+                            }
+                            break;
+                        
+                        case 'ArrowUp':
+                            if (player.y > player.speed) {
+                                player.y -= player.speed;
+                            }
+                            
+                            break;
+                    }
+                }
+            }, false);
 
            
 
         }, false);
 
-        document.addEventListener("keydown", (event) => {
-            if (gameInfo.gameStarted) {
-                switch(event.key) {
-                    case 'ArrowDown':
-                        player.y += player.speed;
-                        break;
-                    
-                    case 'ArrowUp':
-                        player.y -= player.speed;
-                        break;
-                }
-            }
-        }, false);
+        
