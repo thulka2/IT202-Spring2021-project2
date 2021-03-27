@@ -3,10 +3,29 @@
         let enemies;
         let benefit;
         let canvas;
-        
-        
 
+
+
+          
+            
+            
+        const randomInt = (min, max) => {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        }
+
+        const startGame = () => {
+            document.querySelector('#home').classList.add("screen");
+            document.querySelector('#game').classList.remove("screen");
+            gameInfo.gameStarted = true;
+            
+        }
+
+       
+        
         document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector("#btn").addEventListener("click", () => {
             let canvas = document.querySelector("#html-canvas");
             gameInfo.canvas = canvas;
             canvas.width = canvas.clientWidth;
@@ -14,18 +33,18 @@
             let context = canvas.getContext("2d");
             context.imageSmoothingEnabled = true;
             context.imageSmoothingQuality = 'high';
-            gameInfo.gameStarted = true;
+            
 
             const wafPic = new Image(380, 380);
             wafPic.src = "/images/waffle.png"
             wafPic.onload = () => {
-                context.drawImage(wafPic, 0, 0, 100, 100);
+                context.drawImage(wafPic, 200, 0, 100, 100);
             }
 
             const demPic = new Image(380, 360);
             demPic.src = "/images/demogorgon.png"
             demPic.onload = () => {
-                context.drawImage(demPic, 0, 0, 100, 100);
+                context.drawImage(demPic, 400, 0, 100, 100);
             }
 
             const playerPic = new Image(1610, 253);
@@ -43,6 +62,7 @@
             let frameRate = 6;
             player.w = frameWidth * .3;
             player.h = frameHeight * .3;
+            player.y = canvas.height/2;
 
             enemies = [{x: canvas.width + 100, y: randomInt(0, canvas.height / 2), speed: 5, w: 50, h:47.368421052632, type: "harm"}];
             benefit = { x: canvas.width + 3000, y:  randomInt(0, canvas.height - 100), speed: 8, w: 30, h: 30, type: "benefit" }
@@ -59,6 +79,8 @@
                 context.fillText(`Level: ${gameInfo.level}`, canvas.width - 15, 75); 
 
             };
+
+         
 
 
             const drawHarm = (x, y, w, h) => {
@@ -85,16 +107,18 @@
 
 
             const areColliding = (obj1, obj2) => {
+                
 
                 if (obj1.type == "harm") {
                     if (obj2.type != "game") {
                         if (obj1.x < obj2.x + obj2.w && obj1.x + obj1.w > obj2.x && obj1.y < obj2.y + obj2.h &&obj1.y + obj1.h > obj2.y) {
                             // subtract lives
                             gameInfo.lives--;
+                            // drawDamage();
                             if(gameInfo.lives < 0) {
                                 gameInfo.gameOver = true; 
                             }
-                            console.log(gameInfo.gameOver);
+                            
                             return true;
                         }
                     } else {
@@ -130,7 +154,7 @@
                     }
                 }
                
-
+                
                 return false; 
                 
                 
@@ -140,53 +164,47 @@
             const draw = () => {
                 counter++;
                 context.clearRect(0, 0, canvas.width, canvas.height);
+                
                 drawGameInfo();
                 drawPlayer();
-
-               
-                
-
                 // harm object code 
                 enemies.forEach( (harm) => {
-                    // if the harm object touches the wall or the player then respawn it off the screen 
-                    if(areColliding(harm, player) || areColliding(harm, gameInfo)) {
-                        harm.x = canvas.width + randomInt(100, 500);
-                        harm.y = randomInt(0, canvas.height - harm.h);
+                        // if the harm object touches the wall or the player then respawn it off the screen 
+                        if(areColliding(harm, player) || areColliding(harm, gameInfo)) {
+                            harm.x = canvas.width + randomInt(100, 500);
+                            harm.y = randomInt(0, canvas.height - harm.h);
+                        }
+                        else {
+                            harm.x -= harm.speed;
+    
+                        }
+                        drawHarm(harm.x, harm.y, harm.w, harm.h);
+                    });
+    
+                    // benefit object code 
+                    if (areColliding(benefit, gameInfo) || areColliding(benefit, player)) {
+                        // if the benefit object touches the wall or the player then respawn it off the screen 
+                        benefit.x = canvas.width + randomInt(3000, 5000 * gameInfo.level);
+                        benefit.y = randomInt(0, canvas.height - benefit.h);
+                    } else {
+                        benefit.x -= benefit.speed;
                     }
-                    else {
-                        harm.x -= harm.speed;
-
-                    }
-                    drawHarm(harm.x, harm.y, harm.w, harm.h);
-                });
-
-                // benefit object code 
-                if (areColliding(benefit, gameInfo) || areColliding(benefit, player)) {
-                    // if the benefit object touches the wall or the player then respawn it off the screen 
-                    benefit.x = canvas.width + randomInt(3000, 5000 * gameInfo.level);
-                    benefit.y = randomInt(0, canvas.height - benefit.h);
-                } else {
-                    benefit.x -= benefit.speed;
-                }
-                drawBenefit(benefit.x, benefit.y, benefit.w, benefit.h);
+                    drawBenefit(benefit.x, benefit.y, benefit.w, benefit.h);
+                
+               
               
                 // draw if game is not over 
-                if (!gameInfo.gameOver && gameInfo.gameStarted) {
+                if (!gameInfo.gameOver) {
                     requestAnimationFrame(draw);
+                } else {
+                    gameOver();
                 }
             };
 
             draw();
           
 
-            
-            
-            
-            function randomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-            }
+          
 
             document.addEventListener("keydown", (event) => {
                 if (gameInfo.gameStarted) {
@@ -210,5 +228,6 @@
            
 
         }, false);
+        },false);
 
         
