@@ -1,0 +1,208 @@
+        let player = { x: 50, y: 50, speed: 10, w: 50, h: 50, type: "player"};
+        let gameInfo = {gameStarted: false, gameOver: false, lives: 3, score: 0, level: 1, type: "game"}
+        let enemies;
+        let benefit;
+        let canvas;
+        
+        
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let canvas = document.querySelector("#html-canvas");
+            gameInfo.canvas = canvas;
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            let context = canvas.getContext("2d");
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = 'high';
+            gameInfo.gameStarted = true;
+
+            const wafPic = new Image(380, 380);
+            wafPic.src = "/images/waffle.png"
+            wafPic.onload = () => {
+                context.drawImage(wafPic, 0, 0, 100, 100);
+            }
+
+            const demPic = new Image(380, 360);
+            demPic.src = "/images/demogorgon.png"
+            demPic.onload = () => {
+                context.drawImage(demPic, 0, 0, 100, 100);
+            }
+
+            const playerPic = new Image(1610, 253);
+            playerPic.src = "/images/playerSpritesEdit.png"
+            playerPic.onload = () => {
+                context.drawImage(playerPic, 0, 0, 100, 100);
+               
+            }
+
+            let numColumns = 10;
+            let frameWidth = playerPic.width / numColumns;;
+            let frameHeight = playerPic.height;
+            let currentFrame = 0;
+            let counter = 0;
+            let frameRate = 6;
+            player.w = frameWidth * .3;
+            player.h = frameHeight * .3;
+
+            enemies = [{x: canvas.width + 100, y: randomInt(0, canvas.height / 2), speed: 5, w: 50, h:47.368421052632, type: "harm"}];
+            benefit = { x: canvas.width + 3000, y:  randomInt(0, canvas.height - 100), speed: 8, w: 30, h: 30, type: "benefit" }
+            
+
+
+            // shows levels, score, and level onto canvas
+            const drawGameInfo = () => {
+                context.font = "25px Teko";
+                context.fillStyle = "red";
+                context.textAlign = "right";
+                context.fillText(`Score: ${gameInfo.score}`, canvas.width - 15, 25); 
+                context.fillText(`Lives: ${gameInfo.lives}`, canvas.width - 15, 50); 
+                context.fillText(`Level: ${gameInfo.level}`, canvas.width - 15, 75); 
+
+            };
+
+
+            const drawHarm = (x, y, w, h) => {
+                context.drawImage(demPic, x, y, w, h);
+                
+            }
+
+            const drawBenefit = (x, y, w, h) => {
+                context.drawImage(wafPic, x, y, w, h);
+            }
+
+
+            const drawPlayer = () => {
+                if (counter % frameRate == 0) {
+                    currentFrame ++;
+
+                }
+                if (currentFrame > numColumns - 1) {
+                    currentFrame = 0;
+                }
+                context.drawImage(playerPic, currentFrame * frameWidth, 0, frameWidth, frameHeight, player.x, player.y, player.w, player.h);
+            }
+
+
+
+            const areColliding = (obj1, obj2) => {
+
+                if (obj1.type == "harm") {
+                    if (obj2.type != "game") {
+                        if (obj1.x < obj2.x + obj2.w && obj1.x + obj1.w > obj2.x && obj1.y < obj2.y + obj2.h &&obj1.y + obj1.h > obj2.y) {
+                            // subtract lives
+                            gameInfo.lives--;
+                            if(gameInfo.lives < 0) {
+                                gameInfo.gameOver = true; 
+                            }
+                            console.log(gameInfo.gameOver);
+                            return true;
+                        }
+                    } else {
+                        if (obj1.x < 0) {
+                            gameInfo.score++; // player avoided the harm object 
+                            if (gameInfo.score % 15 == 0) {
+                                console.log("increasing level");
+                                gameInfo.level++;
+                                // add an enemy and increase the speeds of all enemies 
+                                enemies.push({x: canvas.width + randomInt(100, 500), y: randomInt(0, canvas.height / 1.33), speed: enemies[0].speed, w: enemies[0].w, h: enemies[0].h, type: "harm"})
+                                // increase speed of all enemies by 15% 
+                                enemies.forEach( (harm) => {
+                                    harm.speed *= 1.15;
+                                });
+                            }
+                            return true;
+                        }
+                    }
+                }
+
+                if (obj1.type == "benefit") {
+                    if (obj2.type != "game") {
+                        if (obj1.x < obj2.x + obj2.w && obj1.x + obj1.w > obj2.x && obj1.y < obj2.y + obj2.h &&obj1.y + obj1.h > obj2.y) {
+                            // add a life 
+                            gameInfo.lives++;
+                            return true;
+                        }
+                    } else {
+                        if (obj1.x < 0) {
+                            // respawn benefit off screen
+                            return true;
+                        }
+                    }
+                }
+               
+
+                return false; 
+                
+                
+            }
+
+
+            const draw = () => {
+                counter++;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                drawGameInfo();
+                drawPlayer();
+
+               
+                
+
+                // harm object code 
+                enemies.forEach( (harm) => {
+                    // if the harm object touches the wall or the player then respawn it off the screen 
+                    if(areColliding(harm, player) || areColliding(harm, gameInfo)) {
+                        harm.x = canvas.width + randomInt(100, 500);
+                        harm.y = randomInt(0, canvas.height - harm.h);
+                    }
+                    else {
+                        harm.x -= harm.speed;
+
+                    }
+                    drawHarm(harm.x, harm.y, harm.w, harm.h);
+                });
+
+                // benefit object code 
+                if (areColliding(benefit, gameInfo) || areColliding(benefit, player)) {
+                    // if the benefit object touches the wall or the player then respawn it off the screen 
+                    benefit.x = canvas.width + randomInt(3000, 5000 * gameInfo.level);
+                    benefit.y = randomInt(0, canvas.height - benefit.h);
+                } else {
+                    benefit.x -= benefit.speed;
+                }
+                drawBenefit(benefit.x, benefit.y, benefit.w, benefit.h);
+              
+                // draw if game is not over 
+                if (!gameInfo.gameOver && gameInfo.gameStarted) {
+                    requestAnimationFrame(draw);
+                }
+            };
+
+            draw();
+          
+
+            
+            
+            
+            function randomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+            }
+
+
+           
+
+        }, false);
+
+        document.addEventListener("keydown", (event) => {
+            if (gameInfo.gameStarted) {
+                switch(event.key) {
+                    case 'ArrowDown':
+                        player.y += player.speed;
+                        break;
+                    
+                    case 'ArrowUp':
+                        player.y -= player.speed;
+                        break;
+                }
+            }
+        }, false);
