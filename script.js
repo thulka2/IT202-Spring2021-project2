@@ -35,7 +35,7 @@ const gameOver = () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector("#btn").addEventListener("click", () => {
+    document.querySelector("#playBtn").addEventListener("click", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
         canvas.width = canvas.clientWidth;
