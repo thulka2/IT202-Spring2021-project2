@@ -22,6 +22,16 @@ const startGame = () => {
 
 }
 
+const gameOver = () => {
+    gameInfo.gameOver = true;
+    gameInfo.gameStarted = false;
+    document.querySelector('#game').classList.add("screen");
+    document.querySelector('#over').classList.remove("screen");
+    document.querySelector('#score').innerHTML = `Final score: ${gameInfo.score}`;
+    document.querySelector('#level').innerHTML = `Highest level: ${gameInfo.level}`;
+
+}
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
