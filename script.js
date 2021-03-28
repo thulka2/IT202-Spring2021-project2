@@ -46,19 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const wafPic = new Image(380, 380);
-        wafPic.src = "/images/waffle.png"
+        wafPic.src = "./images/waffle.png"
         wafPic.onload = () => {
             context.drawImage(wafPic, 200, 0, 100, 100);
         }
 
         const demPic = new Image(380, 360);
-        demPic.src = "/images/demogorgon.png"
+        demPic.src = "./images/demogorgon.png"
         demPic.onload = () => {
             context.drawImage(demPic, 400, 0, 100, 100);
         }
 
         const playerPic = new Image(1610, 253);
-        playerPic.src = "/images/playerSpritesEdit.png"
+        playerPic.src = "./images/playerSpritesEdit.png"
         playerPic.onload = () => {
             context.drawImage(playerPic, 0, 0, 100, 100);
 
