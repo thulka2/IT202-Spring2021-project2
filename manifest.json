@@ -3,9 +3,10 @@
     "background_color": "#2a251f",
     "display": "standalone",
     "scope": "/",
-    "start_url": "https://thulka2.github.io/IT202-Spring2021-project2",
+    "start_url": "/",
     "app_name": "Scrolling Things",
     "short_name": "ST",
+    "name": "Scrolling Things",
     "description": "Do your best to survive against the incoming horde of Demogorgons!",
     "icon": [
         {
