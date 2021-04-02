@@ -2,7 +2,7 @@
     "theme_color": "#d0021b",
     "background_color": "#2a251f",
     "display": "standalone",
-    "scope": "IT202-Spring2021-project2/",
+    "scope": "/",
     "start_url": "/",
     "app_name": "Scrolling Things",
     "short_name": "ST",
