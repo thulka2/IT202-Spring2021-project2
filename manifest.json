@@ -8,7 +8,7 @@
     "short_name": "ST",
     "name": "Scrolling Things",
     "description": "Do your best to survive against the incoming horde of Demogorgons!",
-    "icon": [
+    "icons": [
         {
             "src": "./images/icon-192x192.png",
             "sizes": "192x192",
