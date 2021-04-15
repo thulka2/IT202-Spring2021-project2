@@ -35,10 +35,29 @@ const gameOver = () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    if (window.DeviceOrientationEvent) {
+
+        window.addEventListener('deviceorientation', (event) => {
+        document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
+        if(gameInfo.gameStarted) {
+            if (event.gamma > 25) {
+                if (player.y < canvas.height - player.h - player.speed) {
+                    player.y += player.speed;
+                }
+            } else if (event.gamma < -25) {
+                if (player.y > player.speed) {
+                    player.y -= player.speed;
+                }
+            }
+        }  
+        }, false);
+    }
+
     document.querySelector("#playBtn").addEventListener("click", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
-        canvas.width = screen.availWidth * .9;
+        canvas.width = screen.availWidth * .8;
         canvas.height = screen.availHeight * .7;
         let context = canvas.getContext("2d");
         context.imageSmoothingEnabled = true;
@@ -243,23 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, false);
 
-        if (window.DeviceOrientationEvent) {
-
-            window.addEventListener('deviceorientation', (event) => {
-            document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
-            if(gameInfo.gameStarted) {
-                if (event.gamma > 25) {
-                    if (player.y < canvas.height - player.h - player.speed) {
-                        player.y += player.speed;
-                    }
-                } else if (event.gamma < -25) {
-                    if (player.y > player.speed) {
-                        player.y -= player.speed;
-                    }
-                }
-            }  
-            }, false);
-        }
+        
 
 
 
