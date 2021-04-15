@@ -7,7 +7,7 @@
     "app_name": "Scrolling Things",
     "short_name": "ST",
     "name": "Scrolling Things",
-    "orientation": "landscape",
+    "orientation": "landscape-primary",
     "description": "Do your best to survive against the incoming horde of Demogorgons!",
     "icons": [
         {
