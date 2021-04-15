@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.DeviceOrientationEvent) {
 
             window.addEventListener('deviceorientation', (event) => {
+            document.querySelector('#game p').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
             if(gameInfo.gameStarted) {
                 if (event.gamma > 25) {
                     if (player.y < canvas.height - player.h - player.speed) {
@@ -257,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }  
-            })
+            }, false);
         }
 
 
