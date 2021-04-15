@@ -243,6 +243,21 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, false);
 
+        
+        window.addEventListener('deviceorientation', (event) => {
+          if(gameInfo.gameStarted) {
+              if (event.beta > 25) {
+                if (player.y < canvas.height - player.h - player.speed) {
+                    player.y += player.speed;
+                }
+              } else if (event.beta < -25) {
+                if (player.y > player.speed) {
+                    player.y -= player.speed;
+                }
+              }
+          }  
+        })
+
 
 
     }, false);
