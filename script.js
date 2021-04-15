@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#playBtn").addEventListener("click", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
+        canvas.width = screen.availWidth * .9;
+        canvas.height = screen.availHeight * .7;
         let context = canvas.getContext("2d");
         context.imageSmoothingEnabled = true;
         context.imageSmoothingQuality = 'high';
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.DeviceOrientationEvent) {
 
             window.addEventListener('deviceorientation', (event) => {
-            document.querySelector('#game p').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
+            document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
             if(gameInfo.gameStarted) {
                 if (event.gamma > 25) {
                     if (player.y < canvas.height - player.h - player.speed) {
