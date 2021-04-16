@@ -40,24 +40,7 @@ const clickHandler = () => {
     .then(response => {
         if (response == 'granted') {
             startGame();
-            window.addEventListener('deviceorientation', (event) => {
-                //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
-                document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
-                if (gameInfo.gameStarted) {
-                    if (event.gamma > 15 && event.gamma < 80) {
-                        if (player.y < (screen.availHeight - player.speed)) {
-                            player.y += player.speed / 2;
-                            document.querySelector('#orientationinfo').innerHTML = "moving down";
-                        }
-                    } else if (event.gamma < -10 && event.gamma > -80) {
-                        if (player.y > player.speed) {
-                            player.y -= player.speed / 2;
-                            document.querySelector('#orientationinfo').innerHTML = "moving up";
-
-                        }
-                    }
-                }
-            }, false);
+            
         }
     }).catch(console.error);
     } else {
@@ -78,16 +61,38 @@ document.addEventListener("DOMContentLoaded", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
         // change screen width and height for mobile devices
-        if (screen.width > 600 ) {
-            // desktop
-            canvas.width = 900;
-            canvas.height = 600;
-        } else {
-            // canvas.width = screen.availWidth * .8;
-            // canvas.height = screen.availHeight * .7;
-            canvas.width = screen.availWidth;
-            canvas.height = screen.availHeight;
-        }
+        // if (screen.width > 600 ) {
+        //     // desktop
+        //     canvas.width = 900;
+        //     canvas.height = 600;
+        // } else {
+        //     // canvas.width = screen.availWidth * .8;
+        //     // canvas.height = screen.availHeight * .7;
+        //     canvas.width = screen.availWidth;
+        //     canvas.height = screen.availHeight;
+        // }
+
+        canvas.width = 900;
+        canvas.height = 600;
+
+        window.addEventListener('deviceorientation', (event) => {
+            //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
+            document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
+            if (gameInfo.gameStarted) {
+                if (event.gamma > 15 && event.gamma < 80) {
+                    if (player.y < (canvas.height - player.height - player.speed)) {
+                        player.y += player.speed / 2;
+                        document.querySelector('#orientationinfo').innerHTML = "moving down";
+                    }
+                } else if (event.gamma < -10 && event.gamma > -80) {
+                    if (player.y > player.speed) {
+                        player.y -= player.speed / 2;
+                        document.querySelector('#orientationinfo').innerHTML = "moving up";
+
+                    }
+                }
+            }
+        }, false);
         
         let context = canvas.getContext("2d");
         context.imageSmoothingEnabled = true;
