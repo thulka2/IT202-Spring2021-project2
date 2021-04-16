@@ -72,8 +72,15 @@ document.addEventListener("DOMContentLoaded", () => {
         //     canvas.height = screen.availHeight;
         // }
 
-        canvas.width = screen.availWidth * .8;
-        canvas.height = screen.availHeight * .7;
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            canvas.width = screen.availWidth;
+            canvas.height = screen.availHeight;
+
+        } else {
+            canvas.width = 900;
+            canvas.height = 600;
+        }
+        
 
         // canvas.width = 900;
         // canvas.height = 600;
@@ -83,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
             if (gameInfo.gameStarted) {
                 if (event.gamma > 15 && event.gamma < 80) {
-                    if (player.y < (canvas.height - player.speed)) {
+                    if (player.y < (canvas.height - player.height - player.speed)) {
                         player.y += player.speed / 2;
                         document.querySelector('#orientationinfo').innerHTML = "moving down";
                     }
