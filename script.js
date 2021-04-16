@@ -18,7 +18,7 @@ const randomInt = (min, max) => {
 const startGame = () => {
     document.querySelector('#home').classList.add("screen");
     document.querySelector('#game').classList.remove("screen");
-    gameInfo.gameStarted = true;
+    //gameInfo.gameStarted = true;
 
 }
 
@@ -36,15 +36,19 @@ const gameOver = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    
-    if (window.DeviceOrientationEvent) {
-        
-        
-    }
 
-    DeviceOrientationEvent.requestPermission()
+   
+
+    document.querySelector("#playBtn").addEventListener("click", () => {
+
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            // iOS 13+
+          
+        DeviceOrientationEvent.requestPermission()
         .then(response => {
             if (response == 'granted') {
+                gameInfo.gameStarted = true;
+
                 window.addEventListener('deviceorientation', (event) => {
                     document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
                     if (gameInfo.gameStarted) {
@@ -61,8 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, false);
             }
         }).catch(console.error);
+        } else {
+            gameInfo.gameStarted = true; // start game on web 
+        }
 
-    document.querySelector("#playBtn").addEventListener("click", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
         canvas.width = screen.availWidth * .8;
