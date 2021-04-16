@@ -92,12 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (event.gamma > 15 && event.gamma < 80) {
                     if (player.y < (document.querySelector('canvas').clientHeight - player.h - player.speed)) {
                         player.y += player.speed / 2;
-                        document.querySelector('#orientationinfo').innerHTML = "moving down";
                     }
                 } else if (event.gamma < -10 && event.gamma > -80) {
                     if (player.y > player.speed) {
                         player.y -= player.speed / 2;
-                        document.querySelector('#orientationinfo').innerHTML = "moving up";
 
                     }
                 }
