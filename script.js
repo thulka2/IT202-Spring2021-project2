@@ -43,13 +43,13 @@ const clickHandler = () => {
             startGame();
             window.addEventListener('deviceorientation', (event) => {
                 //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
-                document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
+                //document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
                 if (gameInfo.gameStarted) {
-                    if (event.gamma > 25) {
+                    if (event.gamma > 15 && event.gamma < 80) {
                         if (player.y < canvas.height - player.h - player.speed) {
                             player.y += player.speed;
                         }
-                    } else if (event.gamma < -25) {
+                    } else if (event.gamma < -10 && event.gamma > -80) {
                         if (player.y > player.speed) {
                             player.y -= player.speed;
                         }
@@ -81,8 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
             canvas.width = 900;
             canvas.height = 600;
         } else {
-            canvas.width = screen.availWidth * .8;
-            canvas.height = screen.availHeight * .7;
+            // canvas.width = screen.availWidth * .8;
+            // canvas.height = screen.availHeight * .7;
+            canvas.width = screen.availHeight;
+            canvas.height = screen.availWidth;
         }
         
         let context = canvas.getContext("2d");
