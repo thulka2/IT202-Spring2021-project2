@@ -46,11 +46,14 @@ const clickHandler = () => {
                 if (gameInfo.gameStarted) {
                     if (event.gamma > 15 && event.gamma < 80) {
                         if (player.y < canvas.height - player.h - player.speed) {
-                            player.y += player.speed;
+                            player.y += player.speed / 2;
+                            document.querySelector('#orientationinfo').innerHTML = "moving down";
                         }
                     } else if (event.gamma < -10 && event.gamma > -80) {
                         if (player.y > player.speed) {
-                            player.y -= player.speed;
+                            player.y -= player.speed / 2;
+                            document.querySelector('#orientationinfo').innerHTML = "moving up";
+
                         }
                     }
                 }
