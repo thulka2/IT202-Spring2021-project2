@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
             if (gameInfo.gameStarted) {
                 if (event.gamma > 15 && event.gamma < 80) {
-                    if (player.y < (document.querySelector('canvas').clientHeight - 25) {
+                    if (player.y < (document.querySelector('canvas').clientHeight - 25)) {
                         player.y += player.speed / 2;
                         document.querySelector('#orientationinfo').innerHTML = "moving down";
                     }
