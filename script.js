@@ -45,7 +45,7 @@ const clickHandler = () => {
                 document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
                 if (gameInfo.gameStarted) {
                     if (event.gamma > 15 && event.gamma < 80) {
-                        if (player.y < (canvas.height - player.speed)) {
+                        if (player.y < (screen.availHeight - player.speed)) {
                             player.y += player.speed / 2;
                             document.querySelector('#orientationinfo').innerHTML = "moving down";
                         }
