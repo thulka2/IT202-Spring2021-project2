@@ -53,7 +53,12 @@ const clickHandler = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        document.querySelector('.mobile').classList.remove('screen');
+    } else {
+        document.querySelector('.desktop').classList.remove('screen');
 
+    }
    
 
     document.querySelector("#playBtn").addEventListener("click", () => {
