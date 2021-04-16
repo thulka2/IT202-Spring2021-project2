@@ -18,7 +18,7 @@ const randomInt = (min, max) => {
 const startGame = () => {
     document.querySelector('#home').classList.add("screen");
     document.querySelector('#game').classList.remove("screen");
-    //gameInfo.gameStarted = true;
+    gameInfo.gameStarted = true;
 
 }
 
@@ -33,6 +33,37 @@ const gameOver = () => {
 }
 
 
+const clickHandler = () => {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        // iOS 13+
+      
+    DeviceOrientationEvent.requestPermission()
+    .then(response => {
+        if (response == 'granted') {
+            startGame();
+            window.addEventListener('deviceorientation', (event) => {
+                document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
+                if (gameInfo.gameStarted) {
+                    if (event.gamma > 25) {
+                        if (player.y < canvas.height - player.h - player.speed) {
+                            player.y += player.speed;
+                        }
+                    } else if (event.gamma < -25) {
+                        if (player.y > player.speed) {
+                            player.y -= player.speed;
+                        }
+                    }
+                }
+            }, false);
+        }
+    }).catch(console.error);
+    } else {
+        startGame();
+    }
+
+}
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -41,38 +72,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector("#playBtn").addEventListener("click", () => {
 
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            // iOS 13+
-          
-        DeviceOrientationEvent.requestPermission()
-        .then(response => {
-            if (response == 'granted') {
-                gameInfo.gameStarted = true;
-
-                window.addEventListener('deviceorientation', (event) => {
-                    document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} beta: ${event.beta} gamma: ${event.gamma}`;
-                    if (gameInfo.gameStarted) {
-                        if (event.gamma > 25) {
-                            if (player.y < canvas.height - player.h - player.speed) {
-                                player.y += player.speed;
-                            }
-                        } else if (event.gamma < -25) {
-                            if (player.y > player.speed) {
-                                player.y -= player.speed;
-                            }
-                        }
-                    }
-                }, false);
-            }
-        }).catch(console.error);
-        } else {
-            gameInfo.gameStarted = true; // start game on web 
-        }
-
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
-        canvas.width = screen.availWidth * .8;
-        canvas.height = screen.availHeight * .7;
+        // change screen width and height for mobile devices
+        if (screen.availWidth > 900 ) {
+            // desktop
+            canvas.width = 900;
+            canvas.height = 600;
+        } else {
+            canvas.width = screen.availWidth * .8;
+            canvas.height = screen.availHeight * .7;
+        }
+        
         let context = canvas.getContext("2d");
         context.imageSmoothingEnabled = true;
         context.imageSmoothingQuality = 'high';
@@ -212,6 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const draw = () => {
+            if(gameInfo.gameStarted) {
+
+            
             counter++;
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(bgPic, 0, 0, canvas.width, canvas.height);
@@ -242,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             drawBenefit(benefit.x, benefit.y, benefit.w, benefit.h);
 
-
+            }
 
             // draw if game is not over 
             if (!gameInfo.gameOver) {
