@@ -85,8 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             // canvas.width = screen.availWidth * .8;
             // canvas.height = screen.availHeight * .7;
-            canvas.width = screen.availHeight;
-            canvas.height = screen.availWidth;
+            canvas.width = screen.availWidth;
+            canvas.height = screen.availHeight;
         }
         
         let context = canvas.getContext("2d");
