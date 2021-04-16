@@ -38,7 +38,7 @@ const clickHandler = () => {
       
     DeviceOrientationEvent.requestPermission()
     .then(response => {
-        if (response == 'granted') {
+        if (response == 'granted') { 
             startGame();
             
         }
@@ -66,16 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
         // change screen width and height for mobile devices
-        // if (screen.width > 600 ) {
-        //     // desktop
-        //     canvas.width = 900;
-        //     canvas.height = 600;
-        // } else {
-        //     // canvas.width = screen.availWidth * .8;
-        //     // canvas.height = screen.availHeight * .7;
-        //     canvas.width = screen.availWidth;
-        //     canvas.height = screen.availHeight;
-        // }
+        
 
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
             canvas.width = screen.availWidth;
