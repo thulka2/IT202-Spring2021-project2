@@ -3,7 +3,6 @@ let gameInfo = { gameStarted: false, gameOver: false, lives: 3, score: 0, level:
 let enemies;
 let benefit;
 let canvas;
-let mobile = false;
 
 
 
@@ -41,10 +40,9 @@ const clickHandler = () => {
     .then(response => {
         if (response == 'granted') {
             startGame();
-            mobile = true;
             window.addEventListener('deviceorientation', (event) => {
                 //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
-                //document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
+                document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
                 if (gameInfo.gameStarted) {
                     if (event.gamma > 15 && event.gamma < 80) {
                         if (player.y < canvas.height - player.h - player.speed) {
@@ -77,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let canvas = document.querySelector("#html-canvas");
         gameInfo.canvas = canvas;
         // change screen width and height for mobile devices
-        if (!mobile) {
+        if (screen.width > 600 ) {
             // desktop
             canvas.width = 900;
             canvas.height = 600;
