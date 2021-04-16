@@ -42,7 +42,8 @@ const clickHandler = () => {
         if (response == 'granted') {
             startGame();
             window.addEventListener('deviceorientation', (event) => {
-                document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
+                //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
+                document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
                 if (gameInfo.gameStarted) {
                     if (event.gamma > 25) {
                         if (player.y < canvas.height - player.h - player.speed) {
