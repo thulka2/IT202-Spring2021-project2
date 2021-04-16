@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.addEventListener('deviceorientation', (event) => {
             //document.querySelector('#orientationinfo').innerHTML = `alpha: ${event.alpha} \nbeta: ${event.beta} gamma: ${event.gamma}`;
-            document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
+            //document.querySelector('#orientationinfo').innerHTML = `gamma: ${parseInt(event.gamma)}`;
             if (gameInfo.gameStarted) {
                 if (event.gamma > 15 && event.gamma < 80) {
                     if (player.y < (document.querySelector('canvas').clientHeight - player.h - player.speed)) {
